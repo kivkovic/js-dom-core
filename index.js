@@ -169,6 +169,10 @@ class DOMObject {
         return this;
     }
 
+    removeClass(from_class) {
+        return this.replaceClass(from_class, '');
+    }
+
     focus(index = 0) {
         this.nodes[index].focus();
         return this;
