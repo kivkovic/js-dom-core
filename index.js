@@ -155,32 +155,20 @@ class DOMObject {
     }
 
     get classes() {
-        const classes = new Set();
+        const classes = [];
         this.nodes.forEach((node) => {
             node.className.split(' ').forEach((className) => {
-                if (className) classes.add(className);
+                if (className) classes.push(className);
             });
         });
-
-        classes.add    = (value) => { this.addClass(value);    }
-        classes.delete = (value) => { this.removeClass(value); }
-        classes.clear  = ()      => { this.removeClass();      }
 
         return classes;
     }
 
-    addClass(class_name) {
-        this.nodes.forEach((node) => node.className.search(class_name) == -1 ? node.className += ` ${class_name}` : 0);
-        return this;
-    }
-
-    replaceClass(from_class, to_class) {
-        this.nodes.forEach((node) => node.className = node.className.replace(from_class, to_class));
-        return this;
-    }
-
-    removeClass(from_class = new RegExp('^.+$')) {
-        return this.replaceClass(from_class, '');
+    set classes(values) {
+        this.nodes.forEach((node) => {
+            node.className = Array.from(values).join(' ');
+        });
     }
 
     focus(index = 0) {
