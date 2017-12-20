@@ -14,9 +14,8 @@ class DOMObject {
             this.selector = null;
 
         } else if (reference.constructor === String) {
-            this.nodes = [];
             this.selector = reference;
-            this.nodes = this.fetch(reference);
+            this.load();
 
         } else {
             throw new Exception('Invalid argument: ' + reference);
@@ -34,12 +33,19 @@ class DOMObject {
         return this;
     }
 
-    fetch(selector) {
-        const nodes = document.querySelectorAll(selector);
-        if (nodes instanceof NodeList) {
-            nodes = Array.prototype.slice.call(nodes);
+    create() {
+        this.nodes = [document.createElement(this.selector)];
+        return this;
+    }
+
+    load() {
+        if (this.selector) {
+            const nodes = document.querySelectorAll(this.selector);
+            this.nodes = nodes instanceof NodeList
+                ? Array.prototype.slice.call(nodes)
+                : [];
         }
-        return nodes;
+        return this;
     }
 
     get(index) {
@@ -139,7 +145,7 @@ class DOMObject {
 
         var wait;
         const check = () => {
-            this.nodes = this.selector && this.fetch(this.selector);
+            this.load();
             if (this.nodes && this.nodes.length) {
                 clearInterval(wait);
                 for (let i = 0; i < this.nodes.length; i++) {
