@@ -93,28 +93,23 @@ class DOMObject {
         return this;
     }
 
-    bind(event, callback) {
+    eventFunction(fn, event, callback) {
         const events = event.constructor === Array ? event : [event];
-
-        if (this.nodes.length) {
-            for (let i = 0; i < this.nodes.length; i++) {
-                for (let j = 0; j < events.length; j++) {
-                    this.nodes[i].addEventListener(events[j], callback.bind(new DOMObject(this.nodes[i])));
-                }
-            }
-        }
+        this.nodes.forEach((node) => {
+            events.forEach((event) => {
+                node[fn](event, callback && callback.bind(new DOMObject(node)));
+            });
+        });
 
         return this;
     }
 
-    unbind(event) {
-        if (this.nodes.length) {
-            for (let i = 0; i < this.nodes.length; i++) {
-                this.nodes[i].removeEventListener(event);
-            }
-        }
+    bind(event, callback) {
+        return this.eventFunction('addEventListener', event, callback);
+    }
 
-        return this;
+    unbind(event) {
+        return this.eventFunction('removeEventListener', event);
     }
 
     trigger(event) {
