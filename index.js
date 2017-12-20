@@ -18,7 +18,7 @@ class DOMObject {
             this.load();
 
         } else {
-            throw new Exception('Invalid argument: ' + reference);
+            throw new Error('Invalid argument: ' + reference);
         }
     }
 
