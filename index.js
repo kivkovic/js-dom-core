@@ -154,6 +154,21 @@ class DOMObject {
         return this;
     }
 
+    get classes() {
+        const classes = new Set();
+        this.nodes.forEach((node) => {
+            node.className.split(' ').forEach((className) => {
+                if (className) classes.add(className);
+            });
+        });
+
+        classes.add    = (value) => { this.addClass(value);    }
+        classes.delete = (value) => { this.removeClass(value); }
+        classes.clear  = ()      => { this.removeClass();      }
+
+        return classes;
+    }
+
     addClass(class_name) {
         this.nodes.forEach((node) => node.className.search(class_name) == -1 ? node.className += ` ${class_name}` : 0);
         return this;
@@ -182,7 +197,6 @@ function DOM (target) {
 (setupGettersSetters = (className) => {
     const properties = {
         id:       'id',
-        class:    'className',
         dataset:  'dataset',
         type:     'type',
         src:      'src',
