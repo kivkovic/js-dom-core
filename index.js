@@ -68,7 +68,7 @@ class DOMObject {
         return parent;
     }
 
-    children(selector = null) {
+    find(selector = null) {
         let child = new DOMObject(),
             children = [];
         this.nodes.forEach(function (element) {
