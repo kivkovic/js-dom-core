@@ -245,3 +245,10 @@ function DOM (target) {
     );
 
 })(DOMObject);
+
+if (typeof exports !== 'undefined' ) {
+    if (typeof module !== 'undefined' && module.exports) {
+        exports = module.exports = DOM;
+    }
+    exports.DOM = DOM;
+}
