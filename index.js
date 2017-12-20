@@ -87,7 +87,7 @@ class DOMObject {
     }
 
     bind(event, callback) {
-        let events = event.constructor === Array ? event : [event];
+        const events = event.constructor === Array ? event : [event];
 
         if (this.nodes.length) {
             for (let i = 0; i < this.nodes.length; i++) {
@@ -111,7 +111,7 @@ class DOMObject {
     }
 
     trigger(event) {
-        let trigger_event = event instanceof Event ? event : new Event(event);
+        const trigger_event = event instanceof Event ? event : new Event(event);
         this.nodes.forEach((node) => {
             if (event.constructor === String && node[event]) {
                 node[event]();
