@@ -164,7 +164,7 @@ class DOMObject {
         return this;
     }
 
-    removeClass(from_class) {
+    removeClass(from_class = new RegExp('^.+$')) {
         return this.replaceClass(from_class, '');
     }
 
