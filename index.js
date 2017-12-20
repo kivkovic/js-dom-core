@@ -193,8 +193,8 @@ function DOM (target) {
     return new DOMObject(target);
 }
 
-
 (setupGettersSetters = (className) => {
+
     if (className.prototype.setup === 'done') return;
     className.prototype.setup = 'done';
 
@@ -216,13 +216,9 @@ function DOM (target) {
         read_only:'readOnly',
     };
 
-    const attributes = {
-        name: 'name'
-    };
+    const attributes = { name: 'name' };
 
-    const values = {
-        value: 'value'
-    }
+    const values = { value: 'value' };
 
     const setup = function (properties, getter, setter) {
         for (const property in properties) {
@@ -237,12 +233,19 @@ function DOM (target) {
         }
     };
 
-    setup(properties, (node, key) => node[key], (node, key, value) => node[key] = value);
-    setup(attributes, (node, key) => node.getAttribute(key), (node, key, value) => node.setAttribute(key, value));
+    setup(properties,
+        (node, key) => node[key],
+        (node, key, value) => node[key] = value);
+
+    setup(attributes,
+        (node, key) => node.getAttribute(key),
+        (node, key, value) => node.setAttribute(key, value));
+
     setup(values,
-        (node, key) => (node.tagName == 'INPUT' || node.tagName == 'TEXTAREA' ? node.value : node.innerHTML),
-        (node, key, value) => (node.tagName == 'INPUT' || node.tagName == 'TEXTAREA' ? (node.value = value) : (node.innerHTML = value))
-    );
+        (node, key) => (node.tagName == 'INPUT' || node.tagName == 'TEXTAREA'
+            ? node.value : node.innerHTML),
+        (node, key, value) => (node.tagName == 'INPUT' || node.tagName == 'TEXTAREA'
+            ? (node.value = value) : (node.innerHTML = value)));
 
 })(DOMObject);
 
