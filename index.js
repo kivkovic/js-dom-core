@@ -223,8 +223,8 @@ function DOM (target) {
     setup(properties, (node, key) => node[key], (node, key, value) => node[key] = value);
     setup(attributes, (node, key) => node.getAttribute(key), (node, key, value) => node.setAttribute(key, value));
     setup(values,
-        (node, key) => node.tagName == 'INPUT' || node.tagName == 'TEXTAREA' ? node.value : node.innerHTML,
-        (node, key, value) => node.tagName == 'INPUT' || node.tagName == 'TEXTAREA' ? (node.value = value) : (node.innerHTML = value)
+        (node, key) => (node.tagName == 'INPUT' || node.tagName == 'TEXTAREA' ? node.value : node.innerHTML),
+        (node, key, value) => (node.tagName == 'INPUT' || node.tagName == 'TEXTAREA' ? (node.value = value) : (node.innerHTML = value))
     );
 
 })(DOMObject);
