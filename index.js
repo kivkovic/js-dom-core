@@ -5,7 +5,7 @@ class DOMObject {
             return reference;
         }
 
-        if (reference === window || reference === document || reference instanceof HTMLElement) {
+        if (reference === window || reference === document || reference instanceof HTMLElement || reference instanceof Text) {
             this.nodes = [reference];
             this.selector = null;
 
