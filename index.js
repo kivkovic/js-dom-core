@@ -171,3 +171,54 @@ class DOMObject {
 function DOM (target) {
     return new DOMObject(target);
 }
+
+
+(setupGettersSetters = (class) => {
+    const properties = {
+        id:       'id',
+        class:    'className',
+        dataset:  'dataset',
+        type:     'type',
+        src:      'src',
+        title:    'title',
+        text:     'innerText',
+        html:     'outerHTML',
+        style:    'style',
+        width:    'offsetWidth',
+        height:   'offsetHeight',
+        top:      'offsetTop',
+        right:    'offsetRight',
+        bottom:   'offsetBottom',
+        left:     'offsetLeft',
+        read_only:'readOnly',
+    };
+
+    const attributes = {
+        name: 'name'
+    };
+
+    const values = {
+        value: 'value'
+    }
+
+    const setup = function (properties, getter, setter) {
+        for (const property in properties) {
+            Object.defineProperty(class.prototype, property, {
+                get: function() {
+                    return this.nodes.map((node) => getter(node, properties[property]));
+                },
+                set: function(value) {
+                    this.nodes.forEach((node) => setter(node, properties[property], value));
+                }
+            });
+        }
+    };
+
+    setup(properties, (node, key) => node[key], (node, key, value) => node[key] = value);
+    setup(attributes, (node, key) => node.getAttribute(key), (node, key, value) => node.setAttribute(key, value));
+    setup(values,
+        (node, key) => node.tagName == 'INPUT' || node.tagName == 'TEXTAREA' ? node.value : node.innerHTML,
+        (node, key, value) => node.tagName == 'INPUT' || node.tagName == 'TEXTAREA' ? (node.value = value) : (node.innerHTML = value)
+    );
+
+})(DOMObject);
