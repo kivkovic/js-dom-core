@@ -33,8 +33,11 @@ class DOMObject {
         return this;
     }
 
-    create() {
+    create(properties = {}) {
         this.nodes = [document.createElement(this.selector)];
+        for (let property in properties) {
+            this[property] = properties[property];
+        }
         return this;
     }
 
