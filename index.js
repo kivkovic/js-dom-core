@@ -123,33 +123,25 @@ class DOMObject {
         });
     }
 
-    onReady(callback, timer = 10) {
+    onReady(callback, timer = 50) {
 
-        if (this.nodes.length && (this.nodes[0] === window || this.nodes[0] === document)) { // move to for loop
-            window._load_blocker = false;
+        if (this.nodes.length && this.nodes[0] === window) {
+            window.addEventListener('load', callback, false);
 
-            let locked_callback = (function (callback) {
-                if (window._load_blocker) return;
-                window._load_blocker = true;
-                callback.call(window);
-            }).bind(window, callback);
+        } else if (this.nodes.length && this.nodes[0] === document) {
+            document.addEventListener('DOMContentLoaded', callback, false);
 
-            document.addEventListener('DOMContentLoaded', locked_callback, false);
-            window.addEventListener('load', locked_callback, false);
-            return this;
-        }
-
-        var wait;
-        const check = () => {
-            this.load();
-            if (this.nodes && this.nodes.length) {
-                clearInterval(wait);
-                for (let i = 0; i < this.nodes.length; i++) {
-                    callback.call(new DOMObject(this.nodes[i]));
+        } else {
+            var wait;
+            wait = setInterval(() => {
+                this.load();
+                if (!this.nodes.length) {
+                    return;
                 }
-            }
+                clearInterval(wait);
+                this.nodes.forEach((node) => callback(new DOMObject(node)));
+            }, timer);
         }
-        wait = setInterval(check, timer > 0 ? timer : 10);
 
         return this;
     }
