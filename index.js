@@ -195,6 +195,9 @@ function DOM (target) {
 
 
 (setupGettersSetters = (className) => {
+    if (className.prototype.setup === 'done') return;
+    className.prototype.setup = 'done';
+
     const properties = {
         id:       'id',
         dataset:  'dataset',
