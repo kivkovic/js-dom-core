@@ -173,7 +173,7 @@ function DOM (target) {
 }
 
 
-(setupGettersSetters = (class) => {
+(setupGettersSetters = (className) => {
     const properties = {
         id:       'id',
         class:    'className',
@@ -203,7 +203,7 @@ function DOM (target) {
 
     const setup = function (properties, getter, setter) {
         for (const property in properties) {
-            Object.defineProperty(class.prototype, property, {
+            Object.defineProperty(className.prototype, property, {
                 get: function() {
                     return this.nodes.map((node) => getter(node, properties[property]));
                 },
