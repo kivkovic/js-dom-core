@@ -126,10 +126,18 @@ class DOMObject {
     onReady(callback, timer = 50) {
 
         if (this.nodes.length && this.nodes[0] === window) {
-            window.addEventListener('load', callback, false);
+            if (document.readyState !== 'complete') {
+                window.addEventListener('load', callback, false);
+            } else {
+                callback();
+            }
 
         } else if (this.nodes.length && this.nodes[0] === document) {
-            document.addEventListener('DOMContentLoaded', callback, false);
+            if (document.readyState !== 'complete') {
+                document.addEventListener('DOMContentLoaded', callback, false);
+            } else {
+                callback();
+            }
 
         } else {
             var wait;
