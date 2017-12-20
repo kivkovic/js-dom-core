@@ -82,18 +82,30 @@ class DOMObject {
         return child;
     }
 
-    addChild(node) {
-        const targets = node instanceof DOMObject
-            ? node.nodes
-            : node.constructor === String
-                ? [document.createTextNode(node)]
-                : [node];
+    get children() {
+        const children = this.nodes.map((node) => node.childNodes
+            ? Array.prototype.slice.call(node.childNodes)
+                .map((child) => new DOMObject(child))
+            : []
+        );
+        // TODO: override array in-place methods (pop, push, shift, unshift)
+        return children;
+    }
 
+    set children(incomingChildren = []) {
         this.nodes.forEach((node) => {
-            targets.forEach((target) => node.appendChild(target));
+            // TODO: keep existing ones!
+            node.childNodes
+                && Array.prototype.slice.call(node.childNodes)
+                    .forEach((child) => node.removeChild(child));
+            incomingChildren
+                .forEach((child) => {
+                    let targets = child instanceof DOMObject
+                        ? child.nodes
+                        : [child];
+                    targets.forEach((target) => node.appendChild(target));
+                });
         });
-
-        return this;
     }
 
     eventFunction(fn, event, callback) {
