@@ -80,15 +80,16 @@ class DOMObject {
     }
 
     addChild(node) {
+        const targets = node instanceof DOMObject
+            ? node.nodes
+            : node.constructor === String
+                ? [document.createTextNode(node)]
+                : [node];
 
-        this.nodes.forEach((element) => {
-            let targets = node instanceof DOMObject
-                ? node.nodes
-                : node.constructor === String
-                    ? [document.createTextNode(node)]
-                    : [node];
-            targets.forEach((target) => element.appendChild(target));
+        this.nodes.forEach((node) => {
+            targets.forEach((target) => node.appendChild(target));
         });
+
         return this;
     }
 
