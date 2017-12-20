@@ -128,7 +128,7 @@ class DOMObject {
         });
     }
 
-    onReady(callback, timer) {
+    onReady(callback, timer = 10) {
 
         if (this.nodes.length && (this.nodes[0] === window || this.nodes[0] === document)) { // move to for loop
             window._load_blocker = false;
